@@ -1,18 +1,53 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Header from '../components/Header'
 import styled from 'styled-components'
 import  loginImage from '../assets/login.jpg'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
+import { BiSolidError } from "react-icons/bi";
 
 export default function Login(){
+
+  const navigate = useNavigate();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [errorMsg,setErrorMsg] = useState('');
+  const [loading, setLoading] = useState(false);
+
+
+  const handleLogin = async (e) => {
+    e.preventDefault()
+    setLoading(true);
+
+    try {
+      const response = await axios.post('https://shopify-backend-ah7e.onrender.com/login', {
+        email: email, 
+        password: password,
+      });
+      console.log('Login successful', response.data);
+      setLoading(false);
+      setErrorMsg('')
+      navigate("/");
+    } catch (error) {
+      console.error('Login failed', error.response.data);
+      setLoading(false);
+      setErrorMsg(error.response.data.message)
+    }
+  };
+
+
   return (
     <Container>
         < Header />
-            <FormContainer>
+            <FormContainer onSubmit={handleLogin}>
                 <h2>Sign In</h2>
-                <input type="email" placeholder='Email' required/>
-                <input type="password" placeholder='Password' required/>
-                <button type='submit'>Sign In</button>
+                {errorMsg!=='' && <ErrorContainer>
+          <span><BiSolidErrorIcon/></span>
+            <p>{errorMsg}</p>
+          </ErrorContainer>}
+                <input type="email" placeholder='Email' value={email} onChange={(e) => setEmail(e.target.value)} required/>
+                <input type="password" placeholder='Password' value={password} onChange={(e) => setPassword(e.target.value)}  required/>
+                <button type='submit' disabled={loading} >{loading ? "Signing In..." : "Sign In"}</button>
                 <p>New to Netflix?  <Linkk to='/signup' > Sign up now.</Linkk></p>
             </FormContainer>
     </Container>
@@ -96,3 +131,28 @@ const Linkk = styled(Link)`
         text-decoration: underline;
     }
 `
+
+const ErrorContainer = styled.div`
+  background-color: #D89D31;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: 63%;
+  height: 2rem;
+  padding: 1rem;
+  /* margin-top: 1rem; */
+  border-radius: 6px;
+  p{
+    font-size: 1rem;
+    margin: 0;
+    color: #000000;
+  }
+  span{
+    margin: 0 .6rem 0 0;
+  }
+`
+
+const BiSolidErrorIcon = styled(BiSolidError)`
+  font-size: 1rem; 
+  margin-top:7px;
+`;

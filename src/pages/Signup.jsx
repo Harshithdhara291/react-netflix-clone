@@ -3,9 +3,21 @@ import styled from 'styled-components'
 import  loginImage from '../assets/login.jpg'
 import Header from '../components/Header'
 import { FaChevronRight } from "react-icons/fa";
+import { useNavigate } from 'react-router-dom';
 
 
 export default function Signup(){
+
+    const navigate = useNavigate();
+
+    const handleSubmit = (e) =>{
+        e.preventDefault();
+        navigate({
+            pathname: '/register',
+            state: { data: "dataToSend" },
+        });
+    }
+
   return (
     <Container>
         < Header />
@@ -13,7 +25,7 @@ export default function Signup(){
             <h1>Unlimited movies, TV shows and more</h1>
             <h5>Watch anywhere. Cancel anytime.</h5>
             <p>Ready to watch? Enter your email to create or restart your membership.</p>
-            <FormContainer>
+            <FormContainer onSubmit={handleSubmit}>
                 <input type="email" placeholder='Email address' required/>
                 <button type='submit'>Get Started <FaChevronRight/></button>
             </FormContainer>

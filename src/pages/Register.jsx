@@ -2,15 +2,19 @@ import React, { useState } from "react";
 import Header from "../components/Header";
 import styled from "styled-components";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
-import Snackbar from "@mui/material/Snackbar";
-import Alert from "@mui/material/Alert";
+import { BiSolidError } from "react-icons/bi";
+import { FaXmark } from "react-icons/fa6";
 
-export default function Register() {
+import axios from "axios";
+
+export default function Register({props}) {
+
+  console.log(props);
+
   const navigate = useNavigate();
   const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
-  const [open, setOpen] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
   const [formData, setFormData] = useState({
     username: "",
     email: "",
@@ -31,43 +35,14 @@ export default function Register() {
         "https://shopify-backend-ah7e.onrender.com/register",
         formData
       );
-      handleClick()
       console.log("Registration successful", response);
       setLoading(false);
-    //   navigate("/login");
+      navigate("/login");
     } catch (error) {
-      handleClick()
       console.error("Registration failed", error);
+      setErrorMsg(error.response.data.message);
       setLoading(false);
     }
-  };
-
-  const handleClick = () => {
-    setOpen(true);
-  };
-
-  const handleClose = (event, reason) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-
-    setOpen(false);
-  };
-
-  const snackbar = () => {
-    return (
-      <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
-        <Alert
-          onClose={handleClose}
-          severity="success"
-          variant="filled"
-          sx={{ width: "100%" }}
-          anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-        >
-          This is a success Alert inside a Snackbar!
-        </Alert>
-      </Snackbar>
-    );
   };
 
   return (
@@ -78,6 +53,19 @@ export default function Register() {
           <Button>Sign In</Button>
         </Linkk>
       </Nav>
+      {errorMsg !== "" && (
+        <ErrorContainer>
+          <div>
+            <span>
+              <BiSolidErrorIcon />
+            </span>
+            <p>{errorMsg}</p>
+          </div>
+          <button onClick={() => setErrorMsg("")}>
+            <FaXmark />
+          </button>
+        </ErrorContainer>
+      )}
       {step === 1 ? (
         <FirstContainer>
           <p>STEP 1 OF 2</p>
@@ -125,8 +113,6 @@ export default function Register() {
           </button>
         </FormContainer>
       )}
-      {snackbar()}
-      <button onClick={handleClick}>Open Snackbar</button>
     </Container>
   );
 }
@@ -137,7 +123,7 @@ const Container = styled.div`
   justify-content: flex-start;
   align-items: center;
   background-color: #fff;
-  height: 100vh;
+  min-height: 100vh;
 `;
 
 const Nav = styled.div`
@@ -205,9 +191,11 @@ const FormContainer = styled.form`
   flex-direction: column;
   justify-content: space-evenly;
   align-items: flex-start;
-  height: 65vh;
+  height: 70vh;
   width: 40%;
   margin-top: 3rem;
+  padding: 0 2rem 1rem 0;
+  padding-left: 8rem;
   background-color: #ffffff;
   color: #333333;
   h1 {
@@ -255,4 +243,39 @@ const FormContainer = styled.form`
       }
     }
   }
+`;
+
+const ErrorContainer = styled.div`
+  background-color: #d89d31;
+  display: flex;
+  justify-content:space-between;
+  align-items: center;
+  width: 30%;
+  height: 2rem;
+  padding: 1rem;
+  margin-top: 1rem;
+  border-radius: 6px;
+  p {
+    font-size: 1.2rem;
+    margin: 0;
+    color: #000000;
+  }
+  span {
+    margin: 0 0.6rem 0 0;
+  }
+  button{
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+  div{
+    display: flex;
+    justify-content:center;
+    align-items: center;
+  }
+`;
+
+const BiSolidErrorIcon = styled(BiSolidError)`
+  font-size: 1.3rem;
+  margin-top: 7px;
 `;
