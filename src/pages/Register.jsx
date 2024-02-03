@@ -1,15 +1,15 @@
 import React, { useState } from "react";
 import Header from "../components/Header";
 import styled from "styled-components";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { BiSolidError } from "react-icons/bi";
 import { FaXmark } from "react-icons/fa6";
 
 import axios from "axios";
 
 export default function Register({props}) {
-
-  console.log(props);
+  const location=useLocation()
+  const getData=location.state;
 
   const navigate = useNavigate();
   const [step, setStep] = useState(1);
@@ -17,7 +17,7 @@ export default function Register({props}) {
   const [errorMsg, setErrorMsg] = useState("");
   const [formData, setFormData] = useState({
     username: "",
-    email: "",
+    email: getData,
     password: "",
   });
 

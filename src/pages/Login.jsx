@@ -48,7 +48,7 @@ export default function Login(){
                 <input type="email" placeholder='Email' value={email} onChange={(e) => setEmail(e.target.value)} required/>
                 <input type="password" placeholder='Password' value={password} onChange={(e) => setPassword(e.target.value)}  required/>
                 <button type='submit' disabled={loading} >{loading ? "Signing In..." : "Sign In"}</button>
-                <p>New to Netflix?  <Linkk to='/signup' > Sign up now.</Linkk></p>
+                <p>New to Netflix?  <Linkk to='/in' > Sign up now.</Linkk></p>
             </FormContainer>
     </Container>
   )
@@ -143,7 +143,7 @@ const ErrorContainer = styled.div`
   /* margin-top: 1rem; */
   border-radius: 6px;
   p{
-    font-size: 1rem;
+    font-size: 1.2rem;
     margin: 0;
     color: #000000;
   }

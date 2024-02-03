@@ -63,25 +63,22 @@ export default function Navbar({isScrolled}) {
 }
 
 const Navbarr = styled.div`
+  z-index: 999;
   .scrolled{
     background-color:black;
   }
   nav{
     width: 97%;
-  /* border: 1px solid white; */
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  z-index: 999;
-  background: transparent;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 1rem 0 1rem;
-  position: sticky;
-  top: 0%;
-  position: fixed;
-  transition: 0.3s ease-in-out;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 999;
+    background: transparent;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 1rem 0 1rem;
+    transition: 0.3s ease-in-out;
   }
 `;
 
@@ -114,6 +111,7 @@ const LinksCont = styled.div`
   display: flex;
   justify-content: space-evenly;
   align-items: center;
+  margin-right: 1rem;
   button {
     background: none;
     border: none;

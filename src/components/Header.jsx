@@ -12,7 +12,7 @@ export default function Header(){
   return (
     <Navbar>
       <Image src={netflixLogoImage} alt='netflix-logo' />
-      {currentPath==='/signup' && <Linkk to={'/login'} ><Button>Sign In</Button></Linkk>}
+      {currentPath==='/in' && <Linkk to={'/login'} ><Button>Sign In</Button></Linkk>}
     </Navbar>
   )
 }
